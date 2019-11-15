@@ -29,12 +29,6 @@
   - TEMP_TABLESPACE (FK)
   - CREATION_DATE
 
-#### DBA_TAB_PRIVS:
-  - GRANTEE (FK) (user)
-  - GRANTOR (FK) (admin)
-  - TABLE_NAME (FK)
-  - PRIVILEGE (PK)
-
 #### DBA_ROLE_PRIVS:
   - GRANTEE (FK)
   - GRANTED_ROLE (PK)
