@@ -8,7 +8,6 @@
   - TOTAL_SIZE (CURRENT)
   - CONTENTS/TYPE
   - USED_%
-  - DIRECTORY (*)
   - MAX_SIZE
 
 #### DBA_DATA_FILES:
@@ -16,9 +15,9 @@
   - TABLESPACE_NAME (FK)
   - BYTES (CURRENT)
   - STATUS
+  - USERBYTES (AVAILABLE_SIZE)
   - MAXBYTES
-  - AUTOEXTENSIBLE (BIN)
-  - USERBYTES
+  - AUTOEXTENSIBLE (BIN)  
   - ONLINE_STATUS
 
 #### DBA_USERS:
@@ -58,9 +57,8 @@
   - VALUE
 
 ## Authors
+
   - **A81919** Ricardo Milhazes
   - **A82892** Francisco Reinolds
   - **A82136** José Costa
   - **A81922** Tiago Sousa
-
-
