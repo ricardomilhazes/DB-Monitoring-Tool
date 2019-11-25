@@ -28,7 +28,7 @@
   - TEMP_TABLESPACE (FK)
   - CREATION_DATE
 
-#### DBA_CPU_USAGE_STATISTICS
+#### DBA_CPU_USAGE_STATISTICS (Not using this anymore, check collector.py)
   - DBID (PK)
   - TIMESTAMP
   - CPU_COUNT
@@ -52,7 +52,7 @@
   - NAME
   - VALUE
 
-#### V$SGASTAT
+#### V$SGA
   - NAME
   - VALUE
 
