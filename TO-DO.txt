@@ -1,0 +1,3 @@
+TO-DO:
+
+1. Update tables and the collector script (every active to 0, only one sequence named res_sq, make sur every resource is being correctly inserted and everything else)
