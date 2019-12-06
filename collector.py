@@ -93,7 +93,7 @@ for row in tablespaces:
 
 for k,v in tablespace_array.items():
 	
-	sql = "merge into dbmonitoring.tablespace tbl using (select (:tablespace_name) as name from dual) src on (tbl.name = src.name) when matched then update set status = :status, content = :content, used_mb = :used_mbb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :used_perc, max_size = :max_size, active = 1, timestamp = (select current_timestamp from dual) when not matched then insert (tablespace_id, name, status, content, used_mb, free_mb, total_mb, free_percentage, max_size, active, timestamp) values (tablespace_sq.nextval,:name,:status,:content,:used_mb,:free_mb,:total_mb,:used_perc,:max_size, 1, (select current_timestamp from dual))"	
+	sql = "merge into dbmonitoring.tablespace tbl using (select (:tablespace_name) as name from dual) src on (tbl.name = src.name) when matched then update set status = :status, content = :content, used_mb = :used_mbb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :used_perc, max_size = :max_size, active = 1, timestamp = (select current_timestamp from dual) when not matched then insert (tablespace_id, name, status, content, used_mb, free_mb, total_mb, free_percentage, max_size, active, timestamp) values (dbmonitoring.tablespace_sq.nextval,:name,:status,:content,:used_mb,:free_mb,:total_mb,:used_perc,:max_size, 1, (select current_timestamp from dual))"	
 
 	values = (v.name, v.status, v.content, v.used_mb, v.free_mb, v.total_mb, v.used_perc, v.max_size, v.name, v.status, v.content, v.used_mb, v.free_mb, v.total_mb, v.used_perc, v.max_size)
 	
@@ -125,7 +125,7 @@ for row in datafiles:
 	datafiles_dict[df.file_name] = df;
 		
 for k,v in datafiles_dict.items():
-	sql = "merge into dbmonitoring.datafile dtf using (select tablespace_id from dbmonitoring.tablespace where name = :tablespace_name) src on (dtf.tablespace_id = src.tablespace_id and dtf.name = :file_name) when matched then update set used_mb = :used_mb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :free_percentage, max_size = :max_size, autoextensible = :autoextensible, status = :status, online_status = :online_status, active = 1,timestamp = (select current_timestamp from dual) when not matched then insert (datafile_id, tablespace_id, name, used_mb, free_mb, total_mb, free_percentage, max_size, autoextensible, status, online_status, active, timestamp) values (datafile_sq.nextval,(select tablespace_id from dbmonitoring.tablespace where name = :tablespace_nam),:file_name, :used_mb, :free_mb, :total_mb, :free_percentage, :max_size, :autoextensible, :status, :online_status, 1, (select current_timestamp from dual))"
+	sql = "merge into dbmonitoring.datafile dtf using (select tablespace_id from dbmonitoring.tablespace where name = :tablespace_name) src on (dtf.tablespace_id = src.tablespace_id and dtf.name = :file_name) when matched then update set used_mb = :used_mb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :free_percentage, max_size = :max_size, autoextensible = :autoextensible, status = :status, online_status = :online_status, active = 1,timestamp = (select current_timestamp from dual) when not matched then insert (datafile_id, tablespace_id, name, used_mb, free_mb, total_mb, free_percentage, max_size, autoextensible, status, online_status, active, timestamp) values (dbmontioring.datafile_sq.nextval,(select tablespace_id from dbmonitoring.tablespace where name = :tablespace_nam),:file_name, :used_mb, :free_mb, :total_mb, :free_percentage, :max_size, :autoextensible, :status, :online_status, 1, (select current_timestamp from dual))"
 
 	values = (v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status, v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status)
 
@@ -153,7 +153,7 @@ for row in users:
 	users_dict[u.username] = u
 	
 for k,u in users_dict.items():
-	sql = "merge into dbmonitoring.users u using (select (:username) as name from dual) src on (u.username = src.name) when matched then update set account_status = :account_stats, expiration_date = :expiration_date, default_tablespace = (select tablespace_id from dbmonitoring.tablespace where name = :default_tablespace), temp_tablespace = (select tablespace_id from dbmonitoring.tablespace where name = :temp_tablespace), creation_date = :creation_date, active = 1, timestamp = (select current_timestamp from dual) when not matched then insert (user_id, username, account_status, expiration_date, default_tablespace, temp_tablespace, creation_date, active, timestamp) values (user_sq.nextval, :username, :account_status, :expiration_date, (select tablespace_id from dbmonitoring.tablespace where name = :default_tablespace), (select tablespace_id from dbmonitoring.tablespace where name = :temp_tablespace), :creation_date, 1, (select current_timestamp from dual))"
+	sql = "merge into dbmonitoring.users u using (select (:username) as name from dual) src on (u.username = src.name) when matched then update set account_status = :account_stats, expiration_date = :expiration_date, default_tablespace = (select tablespace_id from dbmonitoring.tablespace where name = :default_tablespace), temp_tablespace = (select tablespace_id from dbmonitoring.tablespace where name = :temp_tablespace), creation_date = :creation_date, active = 1, timestamp = (select current_timestamp from dual) when not matched then insert (user_id, username, account_status, expiration_date, default_tablespace, temp_tablespace, creation_date, active, timestamp) values (dbmonitoring.user_sq.nextval, :username, :account_status, :expiration_date, (select tablespace_id from dbmonitoring.tablespace where name = :default_tablespace), (select tablespace_id from dbmonitoring.tablespace where name = :temp_tablespace), :creation_date, 1, (select current_timestamp from dual))"
 
 	values = (u.username, u.account_status, u.expiration_date, u.default_tablespace, u.temp_tablespace, u.creation_date,u.username, u.account_status, u.expiration_date, u.default_tablespace, u.temp_tablespace, u.creation_date)
 	
@@ -208,7 +208,7 @@ for row in sga:
 	sga_dict[s.name] = s		
 
 for k,v in sga_dict.items():
-	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = 'BYTES', r.origin = 'SGA', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (resource_sq.nextval, :name, :value, 'BYTES', 'SGA', (select current_timestamp from dual))"
+	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = 'BYTES', r.origin = 'SGA', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (dbmonitoring.resource_sq.nextval, :name, :value, 'BYTES', 'SGA', (select current_timestamp from dual))"
 
 	values = (v.name, v.value, v.name, v.value)
 	
@@ -230,7 +230,7 @@ for row in pga:
 	pga_dict[p.name] = p
 
 for k,v in pga_dict.items():
-	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = :unit, r.origin = 'PGA', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (resource_sq.nextval, :name, :value, :unit, 'PGA',(select current_timestamp from dual))"
+	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = :unit, r.origin = 'PGA', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (dbmonitoring.resource_sq.nextval, :name, :value, :unit, 'PGA',(select current_timestamp from dual))"
 
 	values = (v.name, v.value, v.unit, v.name, v.value, v.unit)
 
@@ -252,7 +252,7 @@ for row in cpu:
 
 
 for k,v in cpu_dict.items():
-	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = 'SECS', r.origin = 'CPU', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (resource_sq.nextval, :name, :value, 'SECS', 'CPU', (select current_timestamp from dual))"
+	sql = "merge into dbmonitoring.resources r using (select :name as name from dual) src on (r.name = src.name) when matched then update set r.value = :value, r.unit = 'SECS', r.origin = 'CPU', r.timestamp = (select current_timestamp from dual) when not matched then insert (resource_id, name, value, unit, origin, timestamp) values (dbmonitoring.resource_sq.nextval, :name, :value, 'SECS', 'CPU', (select current_timestamp from dual))"
 
 	values = (v.username, v.count, v.username, v.count)
 		
