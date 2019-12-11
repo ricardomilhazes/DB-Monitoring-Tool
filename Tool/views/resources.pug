@@ -1,0 +1,18 @@
+extends header
+block content
+	table.w3-table-all.w3-center.w3-light-grey
+		tr
+			th ID
+			th Name
+			th Value
+			th Unit
+			th Origin
+			th Timestamp
+		each re in lista
+			tr
+				td= re.resource_id
+				td= re.name
+				td= re.value
+				td= re.unit
+				td= re.origin
+				td= re.timestamp

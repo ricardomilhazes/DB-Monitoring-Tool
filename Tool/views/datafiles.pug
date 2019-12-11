@@ -1,0 +1,32 @@
+extends header
+block content
+	table.w3-table-all.w3-responsive.w3-light-grey
+		tr
+			th Datafile ID
+			th Tablespace ID
+			th Name
+			th Used MBs
+			th Free MBs
+			th Total MBs
+			th Free %
+			th Max Size
+			th Autoextensible
+			th Status
+			th Onlinestatus
+			th Timestamp
+			th Active
+		each df in lista
+			tr
+				td= df.datafile_id
+				td= df.tablespace_id
+				td= df.name
+				td= df.used_mb
+				td= df.free_mb
+				td= df.total_mb
+				td= df.free_percentage
+				td= df.max_size
+				td= df.autoextensible
+				td= df.status
+				td= df.onlinestatus
+				td= df.timestamp
+				td= df.active

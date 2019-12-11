@@ -1,0 +1,22 @@
+extends layout
+block header
+	.w3-card-4
+		header.w3-container.w3-red.w3-center
+			h1 Monitoring Tool
+		.w3-container
+			.w3-center
+				ul
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Home
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/tablespaces' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Tablespaces
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/datafiles' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Datafiles
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/users' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Users	
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/sessions' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Sessions
+					a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/quotas' style='padding:10px 30px; transition-duration:0.4s; text-decoration:none') Quotas
+					.w3-dropdown-hover.w3-red.w3-round.w3-border(style='padding:8px 28px; transition-duration:0.4s; text-decoration:none') Resources
+						.w3-dropdown-content
+							a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/resources' style='padding:10px 41px; transition-duration:0.4s; text-decoration:none; display:inline-block') Info Table
+							a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/resources/sga' style='padding:10px 62px; transition-duration:0.4s; text-decoration:none; display:inline-block') SGA
+							a.w3-button.w3-red.w3-hover-white.w3-round.w3-border(href='http://localhost:5029/resources/pga' style='padding:10px 63px; transition-duration:0.4s; text-decoration:none; display:inline-block') PGA										
+			.w3-center
+					br
+					block content

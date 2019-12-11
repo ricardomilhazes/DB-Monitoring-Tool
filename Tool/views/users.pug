@@ -1,0 +1,24 @@
+extends header
+block content
+	table.w3-table-all.w3-responsive.w3-light-grey
+		tr
+			th ID
+			th Username
+			th Account Status
+			th Expiration Date
+			th Default Tablespace
+			th Temporary Tablespace
+			th Creation Date
+			th Timestamp
+			th Active
+		each us in lista
+			tr
+				td= us.user_id
+				td= us.username
+				td= us.account_status
+				td= us.expiration_date
+				td= us.default_tablespace
+				td= us.temp_tablespace
+				td= us.creation_date
+				td= us.timestamp
+				td= us.active

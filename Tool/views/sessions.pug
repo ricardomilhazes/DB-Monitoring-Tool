@@ -1,0 +1,30 @@
+extends header
+block content
+	table.w3-table-all.w3-responsive.w3-light-grey
+		tr
+			th ID
+			th User ID
+			th Serial Number
+			th Status
+			th Schema Name
+			th OS User
+			th Machine
+			th Port
+			th Type
+			th Log Time
+			th Timestamp
+			th Active
+		each se in lista
+			tr
+				td= se.session_id
+				td= se.user_id
+				td= se.serial_n
+				td= se.status
+				td= se.schema_name
+				td= se.osuser
+				td= se.machine
+				td= se.port
+				td= se.type
+				td= se.logon_time
+				td= se.timestamp
+				td= se.active
