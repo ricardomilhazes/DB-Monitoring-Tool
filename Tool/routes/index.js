@@ -73,6 +73,17 @@ router.get('/quotas', function(req, res, next) {
 			  })
 })
 
+router.get('/quotashist', function(req, res, next) {
+	axios.get('http://localhost:8080/ords/dbmonitoring/quotashist/qth')
+			  .then(resposta => {
+				  res.render('quotashist', {title:'Quotas History', lista: resposta.data.items});
+			  })
+			  .catch(erro => {
+				  console.log('Erro ao ler JSON da API REST.')
+				  res.render('error', {error: erro})
+			  })
+})
+
 router.get('/resources/sga', function(req, res, next) {
 	axios.get('http://localhost:8080/ords/dbmonitoring/resources/src')
 		.then(resposta => {

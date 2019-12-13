@@ -1,5 +1,6 @@
 extends header
 block content
+	h1 Tablespaces
 	table.w3-table-all.w3-center.w3-light-grey
 		tr
 			th ID
@@ -12,7 +13,6 @@ block content
 			th Free %
 			th Max Size
 			th Timestamp
-			th Active
 		each ts in lista
 			tr
 				td= ts.tablespace_id
@@ -25,4 +25,3 @@ block content
 				td= ts.free_percentage
 				td= ts.max_size
 				td= ts.timestamp
-				td= ts.active

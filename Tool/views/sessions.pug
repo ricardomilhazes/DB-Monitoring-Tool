@@ -1,5 +1,6 @@
 extends header
 block content
+	h1 Sessions
 	table.w3-table-all.w3-responsive.w3-light-grey
 		tr
 			th ID
@@ -13,7 +14,6 @@ block content
 			th Type
 			th Log Time
 			th Timestamp
-			th Active
 		each se in lista
 			tr
 				td= se.session_id
@@ -27,4 +27,3 @@ block content
 				td= se.type
 				td= se.logon_time
 				td= se.timestamp
-				td= se.active

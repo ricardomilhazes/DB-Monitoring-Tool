@@ -1,5 +1,6 @@
 extends header
 block content
+	h1 Datafiles
 	table.w3-table-all.w3-responsive.w3-light-grey
 		tr
 			th Datafile ID
@@ -14,7 +15,6 @@ block content
 			th Status
 			th Onlinestatus
 			th Timestamp
-			th Active
 		each df in lista
 			tr
 				td= df.datafile_id
@@ -29,4 +29,3 @@ block content
 				td= df.status
 				td= df.onlinestatus
 				td= df.timestamp
-				td= df.active

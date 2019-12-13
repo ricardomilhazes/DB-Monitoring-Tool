@@ -1,5 +1,6 @@
 extends header
 block content
+	h1 Users
 	table.w3-table-all.w3-responsive.w3-light-grey
 		tr
 			th ID
@@ -10,7 +11,6 @@ block content
 			th Temporary Tablespace
 			th Creation Date
 			th Timestamp
-			th Active
 		each us in lista
 			tr
 				td= us.user_id
@@ -21,4 +21,3 @@ block content
 				td= us.temp_tablespace
 				td= us.creation_date
 				td= us.timestamp
-				td= us.active

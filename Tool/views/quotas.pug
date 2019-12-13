@@ -1,5 +1,6 @@
 extends header
 block content
+	h1 Quotas
 	table.w3-table-all.w3-center.w3-light-grey
 		tr
 			th Tablespace ID
@@ -7,7 +8,6 @@ block content
 			th Used
 			th Max Size
 			th Timestamp
-			th Active
 		each qu in lista
 			tr
 				td= qu.tablespace_id
@@ -15,4 +15,3 @@ block content
 				td= qu.used
 				td= qu.max_size
 				td= qu.timestamp
-				td= qu.active

@@ -3,7 +3,8 @@ import cx_Oracle
 import re
 import requests as req
 import json
-	
+import time
+
 class Tablespace:
 	def __init__(self):
 		self.name = None
@@ -67,7 +68,7 @@ class Quota:
 
 def execute():
 
-	con= cx_Oracle.connect("sys", "oracle", "172.16.201.131/orcl", mode = cx_Oracle.SYSDBA, encoding="UTF-8")
+	con= cx_Oracle.connect("sys", "oracle", "localhost/orcl", mode = cx_Oracle.SYSDBA, encoding="UTF-8")
 
 	cur = con.cursor()
 
@@ -126,7 +127,7 @@ def execute():
 		datafiles_dict[df.file_name] = df;
 			
 	for k,v in datafiles_dict.items():
-		sql = "merge into dbmonitoring.datafile dtf using (select tablespace_id from dbmonitoring.tablespace where name = :tablespace_name) src on (dtf.tablespace_id = src.tablespace_id and dtf.name = :file_name) when matched then update set used_mb = :used_mb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :free_percentage, max_size = :max_size, autoextensible = :autoextensible, status = :status, online_status = :online_status, active = 1,timestamp = (select current_timestamp from dual) when not matched then insert (datafile_id, tablespace_id, name, used_mb, free_mb, total_mb, free_percentage, max_size, autoextensible, status, online_status, active, timestamp) values (dbmontioring.datafile_sq.nextval,(select tablespace_id from dbmonitoring.tablespace where name = :tablespace_nam),:file_name, :used_mb, :free_mb, :total_mb, :free_percentage, :max_size, :autoextensible, :status, :online_status, 1, (select current_timestamp from dual))"
+		sql = "merge into dbmonitoring.datafile dtf using (select tablespace_id from dbmonitoring.tablespace where name = :tablespace_name) src on (dtf.tablespace_id = src.tablespace_id and dtf.name = :file_name) when matched then update set used_mb = :used_mb, free_mb = :free_mb, total_mb = :total_mb, free_percentage = :free_percentage, max_size = :max_size, autoextensible = :autoextensible, status = :status, online_status = :online_status, active = 1,timestamp = (select current_timestamp from dual) when not matched then insert (datafile_id, tablespace_id, name, used_mb, free_mb, total_mb, free_percentage, max_size, autoextensible, status, online_status, active, timestamp) values (dbmonitoring.datafile_sq.nextval,(select tablespace_id from dbmonitoring.tablespace where name = :tablespace_nam),:file_name, :used_mb, :free_mb, :total_mb, :free_percentage, :max_size, :autoextensible, :status, :online_status, 1, (select current_timestamp from dual))"
 
 		values = (v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status, v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status)
 
