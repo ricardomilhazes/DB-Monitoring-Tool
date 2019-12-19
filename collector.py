@@ -72,9 +72,13 @@ def execute():
 
 	cur = con.cursor()
 
+	dbm = cx_Oracle.connect("dbmonitoring", "pass", "localhost/orcl", encoding="UTF-8")
+
+	dbc = dbm.cursor()
+
 	### TABLESPACES ###
 
-	cur.execute("update dbmonitoring.tablespace set active = 0")
+	dbc.execute("update dbmonitoring.tablespace set active = 0")
 
 	tablespaces = cur.execute("(select df.tablespace_name \"Tablespace\", tbl.status, tbl.contents, (df.totalspace - fs.free_space) \"Used MB\", fs.free_space \"Free MB\", df.totalspace \"Total MB\", round(100 * (fs.free_space/ df.totalspace)) \"Pct. Free\", round(df.MAXSIZE,1) capacity from (select tablespace_name, round(sum(bytes) / 1048576) TotalSpace, sum(decode(autoextensible,'YES',maxbytes,bytes))/(1024*1024*1024) maxsize from dba_data_files group by tablespace_name) df, (select tablespace_name, round(sum(bytes)/(1024*1024)) free_space from dba_free_space group by tablespace_name) fs join dba_tablespaces tbl on tbl.tablespace_name = fs.tablespace_name where df.tablespace_name = fs.tablespace_name) union (select dtf.tablespace_name, dtf.status, tbl.contents, round((sum(dtf.bytes) - sum(dtf.user_bytes))/(1024*1024),2) \"Used MB\", round(sum(dtf.user_bytes)/(1024*1024),2) \"Free MB\", round(sum(dtf.bytes) / 1048576) \"Total MB\", round(((sum(dtf.user_bytes)/(1024*1024))/(sum(dtf.bytes) / 1048576))*100,2) \"Pct. Free\", round(sum(decode(dtf.autoextensible,'YES',dtf.maxbytes,dtf.bytes))/(1024*1024),2) \"Capacity\" from dba_temp_files dtf join dba_tablespaces tbl on tbl.tablespace_name = dtf.tablespace_name group by dtf.tablespace_name, dtf.status, tbl.contents)")
 
@@ -99,14 +103,14 @@ def execute():
 
 		values = (v.name, v.status, v.content, v.used_mb, v.free_mb, v.total_mb, v.used_perc, v.max_size, v.name, v.status, v.content, v.used_mb, v.free_mb, v.total_mb, v.used_perc, v.max_size)
 		
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 
 	### DATAFILES ###
 
-	cur.execute("update dbmonitoring.datafile set active = 0")
+	dbc.execute("update dbmonitoring.datafile set active = 0")
 
 	datafiles = cur.execute("(select dtf.tablespace_name, dtf.file_name, round((sum(dtf.bytes) - sum(dtf.user_bytes))/(1024*1024),2) \"Used MB\", round(sum(dtf.user_bytes)/(1024*1024),2) \"Free MB\", round(sum(dtf.bytes) / 1048576) \"Total MB\", round(((sum(dtf.user_bytes)/(1024*1024))/(sum(dtf.bytes) / 1048576))*100,2) \"Pct. Free\", round(sum(decode(dtf.autoextensible,'YES',dtf.maxbytes,dtf.bytes))/(1024*1024),2) \"Capacity\", dtf.autoextensible \"AutoExtensible\", dtf.status \"Status\", vtf.status \"Online Status\" from dba_temp_files dtf join dba_tablespaces tbl on tbl.tablespace_name = dtf.tablespace_name join v$tempfile vtf on dtf.file_id = vtf.file# group by dtf.tablespace_name, dtf.file_name, dtf.autoextensible, dtf.status, vtf.status) union (select dtf.tablespace_name, dtf.file_name, round((sum(dtf.bytes) - sum(dtf.user_bytes))/(1024*1024),2) \"Used MB\", round(sum(dtf.user_bytes)/(1024*1024),2) \"Free MB\", round(sum(dtf.bytes) / 1048576) \"Total MB\", round(((sum(dtf.user_bytes)/(1024*1024))/(sum(dtf.bytes) / 1048576))*100,2) \"Pct. Free\", round(sum(decode(dtf.autoextensible,'YES',dtf.maxbytes,dtf.bytes))/(1024*1024),2) \"Capacity\", dtf.autoextensible \"AutoExtensible\", dtf.status \"Status\", vtf.status \"Online Status\"  from dba_data_files dtf join dba_tablespaces tbl on tbl.tablespace_name = dtf.tablespace_name join v$datafile vtf on dtf.file_id = vtf.file# group by dtf.tablespace_name, dtf.file_name, dtf.autoextensible, dtf.status, vtf.status)")
 
@@ -131,14 +135,14 @@ def execute():
 
 		values = (v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status, v.tablespace_name, v.file_name, v.used_mb, v.free_mb, v.total_mb, v.free_percentage, v.max_size, v.autoextensible, v.status, v.online_status)
 
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 
 	### USERS ###
 
-	cur.execute("update dbmonitoring.users set active = 0")
+	dbc.execute("update dbmonitoring.users set active = 0")
 
 	users = cur.execute("select username, account_status, expiry_date, default_tablespace, temporary_tablespace, created from dba_users")
 
@@ -159,14 +163,14 @@ def execute():
 
 		values = (u.username, u.account_status, u.expiration_date, u.default_tablespace, u.temp_tablespace, u.creation_date,u.username, u.account_status, u.expiration_date, u.default_tablespace, u.temp_tablespace, u.creation_date)
 		
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 
 	### SESSIONS ###
 
-	cur.execute("update dbmonitoring.sessions set active = 0")
+	dbc.execute("update dbmonitoring.sessions set active = 0")
 
 	sessions = cur.execute("select s.sid, s.serial#, u.username, s.status, s.schemaname,s.osuser, s.machine, s.port, s.type, s.logon_time from v$session s join dba_users u on u.user_id = s.user# where s.username is not null")
 
@@ -191,9 +195,9 @@ def execute():
 
 		values = (v.sid,v.username, v.serial_n, v.status, v.schemaname, v.osuser, v.machine, v.port, v.type, v.logon_time, v.sid, v.username, v.serial_n, v.status, v.schemaname, v.osuser, v.machine, v.port, v.type, v.logon_time)
 		
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 	### RESOURCES ###
 
@@ -214,9 +218,9 @@ def execute():
 
 		values = (v.name, v.value, v.name, v.value)
 		
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 	### PGA ###
 
@@ -236,9 +240,9 @@ def execute():
 
 		values = (v.name, v.value, v.unit, v.name, v.value, v.unit)
 
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 
 	### CPU ###
 
@@ -258,14 +262,14 @@ def execute():
 
 		values = (v.username, v.count, v.username, v.count)
 			
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
 
-	con.commit()
+	dbm.commit()
 
 	### QUOTAS ###
 
-	cur.execute("update dbmonitoring.quota set active = 0")
+	dbc.execute("update dbmonitoring.quota set active = 0")
 
 	quotas = cur.execute("select tablespace_name, username, bytes, max_bytes from dba_ts_quotas")
 
@@ -284,11 +288,14 @@ def execute():
 
 		values = (v.tablespace_name, v.username,v.current,v.max_size,v.current,v.max_size)
 		
-		cur.execute(sql,values)
+		dbc.execute(sql,values)
 
-	con.commit()
+	dbm.commit()
 	cur.close()
 	con.close()
+	dbc.close()
+	dbm.close()
+
 
 def main():
 	while True:
