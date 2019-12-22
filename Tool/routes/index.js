@@ -18,25 +18,16 @@ router.get('/tablespaces', function(req, res, next) {
 			})
 })
 
-rendlista = []
-
-tempo = 0
-
 router.get('/tablespaceshist', function(req, res, next) {
 	axios.get('http://localhost:8080/ords/dbmonitoring/tablespaceshist/tsh')
-		.then(resposta => {
-			for(i = (resposta.data.items.length - 10); i < resposta.data.items.length; i++)
-				lista = [tempo]	
-				lista.push(resposta.data.items[i])
-			tempo += 10
-			rendlista.push(lista)
-			res.render('tablespaceshist', {title:'Tablespace History', lista: rendlista, nome: '\'Histórico de Tablespaces\''});
-		})
-		.catch(erro => {
-			console.log('Erro ao ler JSON da API REST.')
-			res.render('error', {error: erro})
-		})
-})
+			  .then(resposta => {
+				  res.render('tablespaceshist', {title:'TS History', lista: resposta.data.items});
+			  })
+			  .catch(erro => {
+				  console.log('Erro ao ler JSON da API REST.')
+				  res.render('error', {error: erro})
+			  })
+  })
 
 router.get('/datafiles', function(req, res, next) {
   axios.get('http://localhost:8080/ords/dbmonitoring/datafiles/dfs')

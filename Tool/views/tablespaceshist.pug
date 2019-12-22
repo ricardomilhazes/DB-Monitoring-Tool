@@ -1,3 +1,17 @@
 extends header
 block content
-	div(id="chart_div2")
+	h1 Tablespaces
+	table.w3-table-all.w3-center.w3-light-grey
+		tr
+			th ID
+			th Name
+			th Status
+			th Free %
+			th Timestamp
+		each ts in lista
+			tr
+				td= ts.tablespace_id
+				td= ts.name
+				td= ts.status
+				td= ts.free_percentage
+				td= ts.timestamp
