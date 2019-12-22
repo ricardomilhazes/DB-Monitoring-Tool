@@ -3,15 +3,15 @@ block content
 	h1 Quotas
 	table.w3-table-all.w3-center.w3-light-grey
 		tr
-			th Tablespace ID
-			th User ID
+			th Tablespace
+			th User
 			th Used
 			th Max Size
 			th Timestamp
 		each qu in lista
 			tr
-				td= qu.tablespace_id
-				td= qu.user_id
+				td= qu.name
+				td= qu.username
 				td= qu.used
 				td= qu.max_size
 				td= qu.timestamp

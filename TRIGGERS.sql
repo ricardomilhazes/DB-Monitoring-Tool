@@ -15,12 +15,13 @@ AFTER UPDATE
 ON TABLESPACE
 FOR EACH ROW
 BEGIN
-    IF :OLD.USED_MB != :NEW.USED_MB THEN
-        INSERT INTO TABLESPACE_HISTORY VALUES(:OLD.TABLESPACE_ID,:OLD.NAME,
-                                        :OLD.STATUS,:OLD.CONTENT,:OLD.USED_MB,
-                                        :OLD.FREE_MB,:OLD.TOTAL_MB,
-                                        :OLD.FREE_PERCENTAGE,:OLD.MAX_SIZE,
-                                        :OLD.TIMESTAMP,:OLD.ACTIVE);
+    IF :OLD.TIMESTAMP != :NEW.TIMESTAMP THEN
+        INSERT INTO TABLESPACE_HISTORY VALUES(:OLD.TABLESPACE_ID,
+                                        :OLD.NAME,
+                                        :OLD.STATUS,
+                                        :OLD.FREE_PERCENTAGE,
+                                        :OLD.TIMESTAMP,
+                                        :OLD.ACTIVE);
     END IF;
 END;
 
